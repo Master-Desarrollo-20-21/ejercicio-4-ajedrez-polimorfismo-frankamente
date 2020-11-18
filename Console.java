@@ -3,22 +3,48 @@ import java.io.InputStreamReader;
 
 public class Console {
 
-    private static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+    private static final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-    public String readString(String message) {
-        System.out.println(message);
-        String entrada = null;
-        try {
-            entrada = bufferedReader.readLine();
-        } catch (Exception e) {
-            this.salir();
-        }
-        return entrada;
+    public String readString(String title) {
+        assert title != null;
+        String input = null;
+        boolean ok = false;
+        do {
+            this.write(title);
+            try {
+                input = bufferedReader.readLine();
+                ok = true;
+            } catch (Exception ex) {
+                this.writeError("an string");
+            }
+        } while (!ok);
+        return input;
     }
 
-    private void salir() {
-        System.out.println("ERROR de entrada/salida");
-        System.exit(0);
+    public int readInt(String title) {
+        assert title != null;
+        int input = 0;
+        boolean ok = false;
+        do {
+            try {
+                input = Integer.parseInt(this.readString(title));
+                ok = true;
+            } catch (Exception ex) {
+                this.writeError("an integer");
+            }
+        } while (!ok);
+        return input;
+    }
+
+    public void write(String string) {
+        assert string != null;
+        System.out.print(string);
+    }
+
+    private void writeError(String format) {
+        assert format != null;
+        System.out.println("FORMAT ERROR! "
+                + "Insert " + format + ".");
     }
 
 }
